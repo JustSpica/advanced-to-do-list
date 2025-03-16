@@ -1,0 +1,6 @@
+{
+  "extends": ["@spica-dev/eslint-config/react"],
+  "rules": {
+    "import/no-absolute-path": "off"
+  }
+}
