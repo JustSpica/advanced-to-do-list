@@ -12,7 +12,7 @@ const button = tv({
       icon: 'p-2'
     },
     variant: {
-      ghost: 'bg-transparent hover:bg-zinc-800',
+      ghost: 'bg-transparent text-white hover:bg-zinc-800',
       primary: 'bg-zinc-200 text-black hover:bg-zinc-300',
       outline: 'text-white ring-1 ring-zinc-800 hover:bg-zinc-800'
     }
