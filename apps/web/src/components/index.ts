@@ -1,3 +1,4 @@
 export * from './button'
-export * from './form/checkbox'
 export * from './form'
+
+export * as Dialog from './dialog'
