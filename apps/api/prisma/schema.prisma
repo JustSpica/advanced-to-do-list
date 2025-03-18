@@ -8,9 +8,9 @@ datasource db {
 }
 
 model User {
-  id            String @id @default(dbgenerated("NEWID()")) @db.UniqueIdentifier
-  username      String
-  password_hash String
+  id           String @id @default(dbgenerated("NEWID()")) @db.UniqueIdentifier
+  username     String
+  passwordHash String @map("password_hash")
 
   tasks Task[]
 
@@ -21,6 +21,7 @@ model Task {
   id          String   @id @default(dbgenerated("NEWID()")) @db.UniqueIdentifier
   title       String
   description String
+  status      Boolean
   createdAt   DateTime @default(now()) @map("created_at")
   userId      String   @map("user_id") @db.UniqueIdentifier
 
