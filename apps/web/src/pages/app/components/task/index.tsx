@@ -1,60 +1,69 @@
-import { Pen, Trash } from 'lucide-react'
+import { AxiosError } from 'axios'
 import { twJoin } from 'tailwind-merge'
 
-import { Button, Checkbox, Dialog, Input, Textarea } from '@app/components'
+import { Checkbox } from '@app/components'
+import { queryClient } from '@app/lib/react-query'
+import { HttpTasksService } from '@app/services/tasks.service'
 
-export function Task() {
+import { DeleteTaskDialog } from './delete-task-dialog'
+import { EditTaskDialog } from './edit-task-dialog'
+
+export type TaskProps = {
+  task: {
+    status: boolean
+    id: string
+    title: string
+    description: string
+    createdAt: Date
+    userId: string
+  }
+}
+
+export function Task({ task }: TaskProps) {
+  const taskService = HttpTasksService.create()
+
+  async function handleUpdateTaskStatus(isChecked: boolean) {
+    try {
+      await taskService.save(task.id, { status: isChecked })
+
+      queryClient.invalidateQueries({ queryKey: ['find-many-tasks-query'] })
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.error(error)
+      }
+    }
+  }
+
   return (
-    <div className="flex w-full items-center rounded-md bg-zinc-950 p-4">
-      <Checkbox id="task" />
-      <label
-        htmlFor="task"
-        className={twJoin('ml-2 flex-1 text-sm text-white')}
-      >
-        Task de teste
-      </label>
+    <div className="flex w-full items-start rounded-md bg-zinc-950 p-4">
+      <Checkbox
+        id={task.id}
+        checked={task.status}
+        onCheckedChange={handleUpdateTaskStatus}
+      />
+
+      <div className="ml-2 flex flex-1 flex-col">
+        <label
+          htmlFor={task.id}
+          className={twJoin(
+            'text-sm text-white',
+            task.status && 'line-through'
+          )}
+        >
+          {task.title}
+        </label>
+        <span className="line-clamp-1 text-sm text-zinc-500">
+          {task.description}
+        </span>
+      </div>
 
       <div className="flex space-x-1">
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <Button group="icon" variant="ghost">
-              <Pen size={16} />
-            </Button>
-          </Dialog.Trigger>
-
-          <Dialog.Content>
-            <Dialog.Title>Editar tarefa</Dialog.Title>
-            <form className="mt-4 w-full space-y-4">
-              <Input placeholder="Título" />
-              <Textarea placeholder="Descrição" />
-              <div className="grid grid-cols-2 gap-4">
-                <Button variant="outline">Cancelar</Button>
-                <Button>Editar tarefa</Button>
-              </div>
-            </form>
-          </Dialog.Content>
-        </Dialog.Root>
-
-        <Dialog.Root>
-          <Dialog.Trigger asChild>
-            <Button group="icon" variant="ghost">
-              <Trash size={16} />
-            </Button>
-          </Dialog.Trigger>
-
-          <Dialog.Content>
-            <Dialog.Title>Excluir tarefa</Dialog.Title>
-
-            <Dialog.Description className="mt-2">
-              Tem certeza que pretende excluir essa tarefa?
-            </Dialog.Description>
-
-            <div className="mt-4 grid grid-cols-2 gap-4">
-              <Button variant="outline">Cancelar</Button>
-              <Button>Excluir tarefa</Button>
-            </div>
-          </Dialog.Content>
-        </Dialog.Root>
+        <EditTaskDialog
+          description={task.description}
+          title={task.title}
+          taskId={task.id}
+        />
+        <DeleteTaskDialog taskId={task.id} />
       </div>
     </div>
   )
