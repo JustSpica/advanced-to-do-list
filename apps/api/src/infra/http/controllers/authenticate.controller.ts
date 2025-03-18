@@ -14,8 +14,8 @@ import {
 } from '@/domain/use-cases/errors'
 
 const authenticateBodySchema = z.object({
-  password: z.string(),
-  username: z.string()
+  password: z.string().min(8),
+  username: z.string().min(1)
 })
 
 type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>

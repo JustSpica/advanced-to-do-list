@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Post,
+  UnauthorizedException,
   UsePipes
 } from '@nestjs/common'
 import { z } from 'zod'
@@ -14,8 +15,8 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 
 const createUserBodySchema = z.object({
   confirmPassword: z.string(),
-  password: z.string(),
-  username: z.string()
+  password: z.string().min(8),
+  username: z.string().min(1)
 })
 
 type CreateUserBodySchema = z.infer<typeof createUserBodySchema>
@@ -41,7 +42,7 @@ export class CreateUserController {
       }
     } catch (error) {
       if (error instanceof WrongCredentialsError) {
-        throw new BadRequestException(error.message)
+        throw new UnauthorizedException(error.message)
       }
 
       throw new BadRequestException()
