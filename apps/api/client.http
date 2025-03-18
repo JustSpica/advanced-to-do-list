@@ -1,0 +1,63 @@
+@baseURL = http://localhost:3333
+@access_token = {{authenticate.response.body.access_token}}
+@taskId = {{create_task.response.body.task.id}}
+
+
+# @name create_user
+POST {{baseURL}}/users
+Content-Type: application/json
+
+{
+  "confirmPassword": "123456",
+  "password": "123456",
+  "username": "Teste"
+}
+
+###
+
+# @name authenticate
+POST {{baseURL}}/auth
+Content-Type: application/json
+
+{
+  "password": "123456",
+  "username": "John Doe"
+}
+
+###
+
+# @name create_task
+POST {{baseURL}}/tasks
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "description": "Testando descrição",
+  "title": "Simple title"
+}
+
+###
+
+# @name fetch_tasks
+GET {{baseURL}}/tasks?page=1
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+
+# @name delete_task
+DELETE {{baseURL}}/tasks/3a0d775d-b5f7-46ff-9472-48f50a60d4b4
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+###
+
+# @name update_task
+PUT {{baseURL}}/tasks/3a0d775d-b5f7-46ff-9472-48f50a60d4b4
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+  "description": "Updated description",
+  "title": "Updated Simple Title"
+}
