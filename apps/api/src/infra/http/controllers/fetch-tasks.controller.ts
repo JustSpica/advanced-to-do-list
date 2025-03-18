@@ -40,12 +40,13 @@ export class FetchTasksController {
     const { sub } = request.user as UserPayload
 
     try {
-      const { tasks } = await this.fetchTasksUseCase.execute({
+      const { metadata, tasks } = await this.fetchTasksUseCase.execute({
         authorId: sub,
         page
       })
 
       return {
+        metadata,
         tasks
       }
     } catch (error) {

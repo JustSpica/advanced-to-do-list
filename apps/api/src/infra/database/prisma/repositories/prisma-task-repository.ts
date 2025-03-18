@@ -30,16 +30,26 @@ export class PrismaTaskRepository implements TasksRepository {
   }
 
   async findManyByUserId(userId: string, page: number) {
-    return await this.prisma.task.findMany({
-      orderBy: {
-        createdAt: 'desc'
+    const [count, tasks] = await Promise.all([
+      this.prisma.task.count({ where: { userId } }),
+      this.prisma.task.findMany({
+        orderBy: {
+          createdAt: 'desc'
+        },
+        skip: (page - 1) * 5,
+        take: 5,
+        where: {
+          userId
+        }
+      })
+    ])
+
+    return {
+      metadata: {
+        count
       },
-      skip: (page - 1) * 10,
-      take: 10,
-      where: {
-        userId
-      }
-    })
+      tasks
+    }
   }
 
   async delete(id: string) {

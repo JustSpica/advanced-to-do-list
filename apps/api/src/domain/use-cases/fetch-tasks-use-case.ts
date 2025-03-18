@@ -12,6 +12,9 @@ interface FetchTasksUseCaseRequest {
 }
 
 interface FetchTasksUseCaseResponse {
+  metadata: {
+    count: number
+  }
   tasks: Task[]
 }
 
@@ -34,8 +37,6 @@ export class FetchTasksUseCase {
 
     const tasks = await this.taskRepository.findManyByUserId(authorId, page)
 
-    return {
-      tasks
-    }
+    return tasks
   }
 }
