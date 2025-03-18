@@ -1,6 +1,7 @@
 import { Route, Switch } from 'wouter'
 
 import { AppPage } from './app'
+import { AuthRoute } from './auth/auth-route'
 import { SignInPage } from './sign-in'
 import { SignUpPage } from './sign-up'
 
@@ -14,7 +15,9 @@ export function Router() {
         <SignInPage />
       </Route>
       <Route path="/app">
-        <AppPage />
+        <AuthRoute isPrivate redirect="/">
+          <AppPage />
+        </AuthRoute>
       </Route>
     </Switch>
   )
