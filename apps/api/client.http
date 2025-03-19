@@ -8,9 +8,9 @@ POST {{baseURL}}/users
 Content-Type: application/json
 
 {
-  "confirmPassword": "123456",
-  "password": "123456",
-  "username": "Teste"
+  "confirmPassword": "12345678",
+  "password": "12345678",
+  "username": "John Doe"
 }
 
 ###
@@ -20,7 +20,7 @@ POST {{baseURL}}/auth
 Content-Type: application/json
 
 {
-  "password": "123456",
+  "password": "12345678",
   "username": "John Doe"
 }
 
@@ -46,18 +46,19 @@ Authorization: Bearer {{access_token}}
 ###
 
 # @name delete_task
-DELETE {{baseURL}}/tasks/3a0d775d-b5f7-46ff-9472-48f50a60d4b4
+DELETE {{baseURL}}/tasks/6cf254f1-e6ae-4df7-a99d-77a27bd7a0ae
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 ###
 
 # @name update_task
-PUT {{baseURL}}/tasks/3a0d775d-b5f7-46ff-9472-48f50a60d4b4
+PUT {{baseURL}}/tasks/6cf254f1-e6ae-4df7-a99d-77a27bd7a0ae
 Content-Type: application/json
 Authorization: Bearer {{access_token}}
 
 {
-  "description": "Updated description",
-  "title": "Updated Simple Title"
+  "description": "Updated simple description",
+  "status": true,
+  "title": "Updated simple Title"
 }
