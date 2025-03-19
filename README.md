@@ -170,7 +170,7 @@ Endpoint usado para deletar uma tarefa de um usuário.
 - Node.js >= v20.14
 
 ## ⚙️ Instalação
-### 1.Clone o repositório
+### 1. Clone o repositório
 ```bash
 git clone https://github.com/JustSpica/advanced-to-do-list.git
 cd advanced-to-do-list
@@ -198,12 +198,16 @@ Suba o Docker Compose:
 docker compose up -d
 ```
 
-O contêiner Docker usa a imagem `mcr.microsoft.com/mssql/server:2019-latest` do SQL Server, e a aplicação tentará se conectar com o banco de dados na porta `1433` onde `user=SA`, `password=Docker123@!` e `database=to_do_database`.
+O contêiner Docker usa a imagem `mcr.microsoft.com/mssql/server:2019-latest` do SQL Server, e a aplicação tentará se conectar com o banco de dados na porta `1433` onde `user=SA`, `password=Docker123@!` e `database=to_do_database` como mostado no `.env` que conecta com o Prisma.
+
+```env
+DATABASE_URL="sqlserver://localhost:1433;database=to_do_database;user=SA;password=Docker123@!;encrypt=true;trustServerCertificate=true;"
+```
 
 ### 4. Conectando ao SQL Server
 #### 4.1 Via linha de comando (`sqlcmd` dentro do contêiner)
 
-A imagem do SQL Server fornece a ferramenta `sqlcmd` que pode ser usada dentro do contêiner para executar comandos T-SQL.
+A imagem do SQL Server fornece a ferramenta `sqlcmd` que pode ser usada dentro do contêiner para executar comandos T-SQL e criar o banco de dados `to_do_database`:
 ```bash
 docker exec -it sqlserver bash
 ```
@@ -228,7 +232,7 @@ to_do_database
 ```
 
 #### 4.2 Conectando via uma ferramenta externa
-Pode ser usado alguma ferramentas gráficas, como:
+Pode ser usado alguma ferramenta gráfica, como:
 
 - Azure Data Studio
 - SQL Server Management Studio
@@ -237,9 +241,9 @@ Pode ser usado alguma ferramentas gráficas, como:
 Nas configurações de conexão, informe:
 
 - Server/Host: `localhost`.
-Port: `1433` (se você não alterou a porta).
-Login: `SA`
-Password: `Docker123@!`
+- Port: `1433` (se você não alterou a porta).
+- Login: `SA`
+- Password: `Docker123@!`
 
 Dentro de `apps/api` execute as migrations do Prisma:
 ```bash
