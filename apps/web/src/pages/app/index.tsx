@@ -20,7 +20,7 @@ export function AppPage() {
   const taskService = HttpTasksService.create()
 
   const [isNewTaskDialogOpen, setIsNewTaskDialogOpen] = useState(false)
-  const [limit, setLimit] = useState(0)
+  const [limit, setLimit] = useState(1)
   const [page, setPage] = useState(1)
 
   const { toast } = useToast()
@@ -32,7 +32,11 @@ export function AppPage() {
     queryFn: async () => {
       const { data } = await taskService.findMany(page)
 
-      setLimit(Math.ceil(data.metadata.count / 5))
+      const newLimit = Math.ceil(data.metadata.count / 5)
+
+      if (newLimit > 1) {
+        setLimit(newLimit)
+      }
 
       return data
     }
